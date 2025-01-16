@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
@@ -43,6 +44,7 @@ export function StoreProfileDialog() {
     register,
     handleSubmit,
     formState: { isSubmitting },
+    reset,
   } = useForm<StoreProfileSchema>({
     resolver: zodResolver(storeProfileSchema),
     values: {
@@ -99,6 +101,15 @@ export function StoreProfileDialog() {
       toast.error('Falha ao atualizar o perfil, tente novamente!')
     }
   }
+
+  useEffect(() => {
+    if (managedRestaurant) {
+      reset({
+        name: managedRestaurant.name ?? '',
+        description: managedRestaurant.description ?? '',
+      })
+    }
+  }, [managedRestaurant, reset])
 
   return (
     <DialogContent>
