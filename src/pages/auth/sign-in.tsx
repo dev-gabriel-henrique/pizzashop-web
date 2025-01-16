@@ -1,3 +1,4 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
@@ -10,7 +11,6 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const signInForm = z.object({
   email: z.string().email(),
 })
@@ -28,6 +28,7 @@ export function SignIn() {
     defaultValues: {
       email: searchParams.get('email') ?? '',
     },
+    resolver: zodResolver(signInForm),
   })
 
   const { mutateAsync: authenticate } = useMutation({
